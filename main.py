@@ -1,10 +1,14 @@
 from flask import Flask, render_template
+import time
+import datetime
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "Hello World!"
+    total_seconds = 25 * 60  # 25 minutes
+    return render_template("index.html", num=total_seconds)
+
 
 @app.route("/index")
 def index():
@@ -12,4 +16,4 @@ def index():
     return render_template("index.html", num = number)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

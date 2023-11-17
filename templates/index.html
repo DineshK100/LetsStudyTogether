@@ -1,7 +1,37 @@
-{% extends "base.html" %}
-{% block title %}Home Page{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <script>
+        function startTimer(totalSeconds) {
+            let timerElement = document.getElementById("timer");
 
-{{ num }}
-<h1>Test</h1>
-{% endblock %}
+            function updateTimer() {
+                if (totalSeconds > 0) {
+                    totalSeconds--;
+                    timerElement.innerText = formatTime(totalSeconds);
+                    setTimeout(updateTimer, 1000);
+                }
+            }
+
+            function formatTime(seconds) {
+                let minutes = Math.floor(seconds / 60);
+                let remainingSeconds = seconds % 60;
+                return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            }
+
+            updateTimer();
+        }
+    </script>
+</head>
+<body>
+    <h1>Countdown Timer</h1>
+    <p id="timer"></p>
+    <script>
+        // Pass the total seconds from Flask to JavaScript
+        startTimer({{ num }});
+    </script>
+</body>
+</html>
