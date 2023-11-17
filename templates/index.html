@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer</title>
     <script>
-        function startTimer(totalSeconds) {
+        function startTimer() {
             let timerElement = document.getElementById("timer");
+
+            // Retrieve the total seconds from localStorage or use a default value (25 minutes)
+            let totalSeconds = parseInt(localStorage.getItem("totalSeconds")) || 25 * 60;
 
             function updateTimer() {
                 if (totalSeconds > 0) {
                     totalSeconds--;
                     timerElement.innerText = formatTime(totalSeconds);
+                    // Save the current total seconds to localStorage
+                    localStorage.setItem("totalSeconds", totalSeconds);
                     setTimeout(updateTimer, 1000);
                 }
             }
@@ -30,8 +35,8 @@
     <h1>Countdown Timer</h1>
     <p id="timer"></p>
     <script>
-        // Pass the total seconds from Flask to JavaScript
-        startTimer({{ num }});
+        // Start the timer
+        startTimer();
     </script>
 </body>
 </html>
