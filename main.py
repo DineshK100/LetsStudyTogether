@@ -8,7 +8,8 @@ def hello_world():
 
 @app.route("/index")
 def index():
-    return render_template("index.html", name="Pycharm")
+    number = 10
+    return render_template("index.html", num = number)
 
 if __name__ == '__main__':
     app.run()
