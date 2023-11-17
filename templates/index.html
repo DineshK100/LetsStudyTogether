@@ -4,39 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer</title>
-    <script>
-        function startTimer() {
-            let timerElement = document.getElementById("timer");
-
-            // Retrieve the total seconds from localStorage or use a default value (25 minutes)
-            let totalSeconds = parseInt(localStorage.getItem("totalSeconds")) || 25 * 60;
-
-            function updateTimer() {
-                if (totalSeconds > 0) {
-                    totalSeconds--;
-                    timerElement.innerText = formatTime(totalSeconds);
-                    // Save the current total seconds to localStorage
-                    localStorage.setItem("totalSeconds", totalSeconds);
-                    setTimeout(updateTimer, 1000);
-                }
-            }
-
-            function formatTime(seconds) {
-                let minutes = Math.floor(seconds / 60);
-                let remainingSeconds = seconds % 60;
-                return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-            }
-
-            updateTimer();
-        }
-    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 <body>
     <h1>Countdown Timer</h1>
     <p id="timer"></p>
-    <script>
-        // Start the timer
-        startTimer();
-    </script>
 </body>
 </html>
