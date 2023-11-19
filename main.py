@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route("/")
 def hello_world():
     total_seconds = 25 * 60  # 25 minutes
-    return render_template("index.html", num=total_seconds)
+    return render_template("cover.html")
 
 
 @app.route("/index")
