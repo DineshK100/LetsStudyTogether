@@ -29,14 +29,33 @@
 
             updateTimer();
         }
+
+        // Function to start the timer when the button is clicked
+        function handleStartButtonClick() {
+            startTimer();
+            // Hide the button after it's clicked
+            document.getElementById("startButton").style.display = "none";
+            // Set a flag in localStorage indicating that the button has been clicked
+            localStorage.setItem("buttonClicked", "true");
+        }
+
+        // Check if the button has been clicked before (on page load)
+        window.onload = function() {
+            if (localStorage.getItem("buttonClicked") === "true") {
+                // If the button has been clicked, start the timer and hide the button immediately
+                document.getElementById("startButton").style.display = "none";
+                startTimer();
+            } else {
+                // If the button hasn't been clicked, set the initial style to display: none
+                document.getElementById("startButton").style.display = "none";
+            }
+        };
     </script>
 </head>
 <body>
     <h1>Countdown Timer</h1>
     <p id="timer"></p>
-    <script>
-        // Start the timer
-        startTimer();
-    </script>
+    <!-- Add a "Start Timer" button with initial style set to display: none -->
+    <button id="startButton" onclick="handleStartButtonClick()" style="display: none;">Start Timer</button>
 </body>
 </html>
