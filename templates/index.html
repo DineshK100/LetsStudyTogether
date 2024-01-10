@@ -1,73 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Countdown Timer</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body class="container mt-5">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
 
+    <script>
+      function executeTimer() {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "script.js", true);
+
+        xhr.onreadystatechange = function() {
+          if (this.readyState === 4 && this.status === 200) {
+            var response = this.responseText;
+            eval(response); // Execute the response as JavaScript code
+            startTimer(); // Call the Node.js function
+          }
+        };
+
+        xhr.send();
+      }
+    </script>
+  </head>
+
+  <body class="container mt-5">
     <div class="text-center">
-        <h1 class="mb-4">Countdown Timer</h1>
-        <p id="timer" class="h3"></p>
-        <!-- Add a "Start Timer" button with Bootstrap classes -->
-        <button id="startButton" onclick="handleStartButtonClick()" class="btn btn-primary mt-3">Start Timer</button>
+      <h1 class="mb-4">Countdown Timer</h1>
+      <p id="timer" class="h3"></p>
+      <!-- Add a "Start Timer" button with Bootstrap classes -->
+      <button
+        id="startButton"
+        onclick="executeTimer()"
+        class="btn btn-primary mt-3"
+      >
+        Start Timer
+      </button>
     </div>
 
     <!-- Bootstrap JS and Popper.js (required for Bootstrap's JavaScript) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        function startTimer() {
-            let timerElement = document.getElementById("timer");
-
-            // Retrieve the total seconds from localStorage or use a default value (25 minutes)
-            let totalSeconds = parseInt(localStorage.getItem("totalSeconds")) || 25 * 60;
-
-            function updateTimer() {
-                if (totalSeconds > 0) {
-                    totalSeconds--;
-                    timerElement.innerText = formatTime(totalSeconds);
-                    // Save the current total seconds to localStorage
-                    localStorage.setItem("totalSeconds", totalSeconds);
-                    setTimeout(updateTimer, 1000);
-                }
-            }
-
-            function formatTime(seconds) {
-                let minutes = Math.floor(seconds / 60);
-                let remainingSeconds = seconds % 60;
-                return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-            }
-
-            updateTimer();
-        }
-
-        // Function to start the timer when the button is clicked
-        function handleStartButtonClick() {
-            startTimer();
-            // Hide the button after it's clicked
-            document.getElementById("startButton").style.display = "none";
-            // Set a flag in localStorage indicating that the button has been clicked
-            localStorage.setItem("buttonClicked", "true");
-        }
-
-        // Check if the button has been clicked before (on page load)
-        window.onload = function() {
-            if (localStorage.getItem("buttonClicked") === "true") {
-                // If the button has been clicked, start the timer and hide the button immediately
-                document.getElementById("startButton").style.display = "none";
-                startTimer();
-            } else {
-                // If the button hasn't been clicked, set the initial style to display: none
-                document.getElementById("startButton").style.display = "none";
-            }
-        };
-    </script>
-</body>
+  </body>
 </html>

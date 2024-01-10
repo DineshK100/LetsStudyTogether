@@ -23,6 +23,3 @@ function startTimer() {
 
     updateTimer();
 }
-
-// Pass the total seconds from Flask to JavaScript
-startTimer();
