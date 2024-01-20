@@ -1,52 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Countdown Timer</title>
+    <title>Pomodoro Timer</title>
 
     <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .timer-container {
+            text-align: center;
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .timer-buttons button {
+            margin: 0 10px;
+        }
+    </style>
 
     <script>
-      function executeTimer() {
-        var xhr = new XMLHttpRequest();
+        var timer;
+        var timerRunning = false;
+        var secondsRemaining = 1500; // 25 minutes by default
 
-        xhr.open("GET", "script.js", true);
+        function executeTimer() {
+            if (!timerRunning) {
+                startTimer();
+                timerRunning = true;
+            }
+        }
 
-        xhr.onreadystatechange = function() {
-          if (this.readyState === 4 && this.status === 200) {
-            var response = this.responseText;
-            eval(response); // Execute the response as JavaScript code
-            startTimer(); // Call the Node.js function
-          }
-        };
+        function setTimer() {
+            var customTime = prompt("Enter custom time in minutes:");
+            if (customTime !== null && !isNaN(customTime) && customTime > 0) {
+                secondsRemaining = customTime * 60;
+                updateTimerDisplay();
+                if (timerRunning) {
+                    clearInterval(timer);
+                    startTimer();
+                }
+            }
+        }
 
-        xhr.send();
-      }
+        function pauseResumeTimer() {
+            if (timerRunning) {
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                } else {
+                    startTimer();
+                }
+            }
+        }
+
+        function startTimer() {
+            timer = setInterval(function () {
+                secondsRemaining--;
+                if (secondsRemaining < 0) {
+                    clearInterval(timer);
+                    timer = null;
+                    timerRunning = false;
+                    alert("Pomodoro session completed!");
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            var minutes = Math.floor(secondsRemaining / 60);
+            var seconds = secondsRemaining % 60;
+            document.getElementById("timer").textContent = padZero(minutes) + ":" + padZero(seconds);
+        }
+
+        function padZero(num) {
+            return (num < 10 ? "0" : "") + num;
+        }
     </script>
-  </head>
+</head>
 
-  <body class="container mt-5">
-    <div class="text-center">
-      <h1 class="mb-4">Countdown Timer</h1>
-      <p id="timer" class="h3"></p>
-      <!-- Add a "Start Timer" button with Bootstrap classes -->
-      <button
-        id="startButton"
-        onclick="executeTimer()"
-        class="btn btn-primary mt-3"
-      >
-        Start Timer
-      </button>
+<body>
+    <div class="container timer-container">
+        <h1 class="mb-4">Pomodoro Timer</h1>
+        <p id="timer" class="h3"></p>
+        <div class="timer-buttons">
+            <button id="setTimerButton" class="btn btn-secondary" onclick="setTimer()">Set Timer</button>
+            <button id="pauseResumeButton" class="btn btn-secondary" onclick="pauseResumeTimer()">Pause/Resume</button>
+            <button id="startButton" class="btn btn-primary" onclick="executeTimer()">Start Timer</button>
+        </div>
     </div>
 
     <!-- Bootstrap JS and Popper.js (required for Bootstrap's JavaScript) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
+</body>
 </html>

@@ -11,7 +11,7 @@ function startTimer() {
             timerElement.innerText = formatTime(totalSeconds);
             // Save the current total seconds to localStorage
             localStorage.setItem("totalSeconds", totalSeconds);
-            setTimeout(updateTimer, 1000);
+            setTimeout(updateTimer, 1000); 
         }
     }
 
